@@ -22,7 +22,7 @@ public class Principal {
 		//ventana.setSize(320, 240);
 		ventana.inicio();
 		//ventana.setVisible(true);
-
+//
 
 		/*
 	public void crearVentana() {
