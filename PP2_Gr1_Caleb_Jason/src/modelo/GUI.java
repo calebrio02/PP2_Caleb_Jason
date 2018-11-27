@@ -172,7 +172,7 @@ public void inicio() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane opt = new JOptionPane("Que tengas un buen dia!", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+			JOptionPane opt = new JOptionPane("Ten buen dia!", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
 			  final JDialog dlg = opt.createDialog("Aviso");
 			  new Thread(new Runnable()
 			        {
@@ -262,6 +262,8 @@ public void ingresar() throws PropertyVetoException {
 	JLabel nombre = new JLabel("Nombre");
 	JLabel dni = new JLabel("Dni");
 	JLabel salario = new JLabel("Salario");
+	JLabel tipoCliente = new JLabel("Tipo de Cliente");
+	JLabel productoFinanciero = new JLabel("Producto Financiero");
 	JTextField aNombre = new JTextField();
 	JTextField aDni = new JTextField();
 	JTextField aSalario = new JTextField();
@@ -275,7 +277,7 @@ public void ingresar() throws PropertyVetoException {
 	JComboBox boxC;
 	
 	String[] clientes = {"Selecciona","Administrativo", "Docente","Pensionado"};
-	String[] servicioA = {"Selecciona","Credito Corriente","Prestamo Vivienda","Equipo Computo","Especial Ordinario","Plan ahorro a la vista","Plan ahorro anual"};
+	String[] servicioA = {"Selecciona tipo de cliente primero"};
 	String[] servicioB = {"Selecciona","Credito Corriente","Prestamo Vivienda","Equipo Computo","Plan ahorro anual"};
 	
 	nombre.setBounds(47, 44,50, 14);
@@ -370,13 +372,20 @@ public void ingresar() throws PropertyVetoException {
 	iFrame.toFront();
 
 	
+	tipoCliente.setBounds(26, 150, 200, 20);
+	desktopI.add(tipoCliente);
+	
+	productoFinanciero.setBounds(26, 200, 200, 20);
+	desktopI.add(productoFinanciero);
+	
 	boxC = new JComboBox(clientes);
-	boxC.setBounds(103, 150, 200, 20);
+	boxC.setBounds(200, 150, 200, 20);
 	desktopI.add(boxC);
 	
 	
 	boxS = new JComboBox();
-	boxS.setBounds(103, 200, 200, 20);
+	boxS.setBounds(200, 200, 200, 20);
+	boxS.setModel(new DefaultComboBoxModel(servicioA));
 	desktopI.add(boxS);
 
 	continuar.setBounds(227, 277, 90, 23);
@@ -406,34 +415,34 @@ public void ingresar() throws PropertyVetoException {
 				
 				
 			}else if(aDni.getText().isEmpty()||aDni.getText().length()<7){
-				
-				if(aDni.getText().length()<7) {
+				if(aDni.getText().isEmpty()){
+					JOptionPane opt = new JOptionPane("Ingresa una Identificacion", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+					  final JDialog dlg = opt.createDialog("Aviso");
+					  new Thread(new Runnable()
+					        {
+					          public void run()
+					          {
+					            try
+					            {
+					              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+					              dlg.dispose();
+
+					            }
+					            catch ( Throwable th )
+					            {
+					          
+					            }
+					          }
+					        }).start();
+					  dlg.setVisible(true);
+				}else if(aDni.getText().length()<7) {
 					JOptionPane.showMessageDialog(null,"El DNI debe contener 7 digitos");
 					aDni.setText("");
-				}else {
-				  JOptionPane opt = new JOptionPane("Ingresa una identificacion", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
-				  final JDialog dlg = opt.createDialog("Aviso");
-				  new Thread(new Runnable()
-				        {
-				          public void run()
-				          {
-				            try
-				            {
-				              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
-				              dlg.dispose();
-
-				            }
-				            catch ( Throwable th )
-				            {
-				          
-				            }
-				          }
-				        }).start();
-				  dlg.setVisible(true);
+				
 				}
 			
 			}else if(aSalario.getText().isEmpty()) {
-				  JOptionPane opt = new JOptionPane("Vacio", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+				  JOptionPane opt = new JOptionPane("Debes ingresar un salario", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
 				  final JDialog dlg = opt.createDialog("Aviso");
 				  new Thread(new Runnable()
 				        {
@@ -456,25 +465,38 @@ public void ingresar() throws PropertyVetoException {
 			
 			
 			}else {
-			
-			
-			
-							
- 
+				
+				
+				if(boxS.getSelectedItem().toString().equalsIgnoreCase("Selecciona tipo de cliente primero")) {
+					JOptionPane opt = new JOptionPane("Debes escoger un cliente y un producto financiero!", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+					  final JDialog dlg = opt.createDialog("Aviso");
+					  new Thread(new Runnable()
+					        {
+					          public void run()
+					          {
+					            try
+					            {
+					              Thread.sleep(1500);//Duracion de un segundo para que el mensaje desaparezca
+					              dlg.dispose();
+
+					            }
+					            catch ( Throwable th )
+					            {
+					            }
+					          }
+					        }).start();
+					  dlg.setVisible(true);
+				}else {
 				dinamicDesk(boxC.getSelectedItem().toString(), boxS.getSelectedItem().toString(),
 						aNombre.getText(),aDni.getText(),aSalario.getText());
 						aNombre.setText("");
 						aDni.setText("");
 						aSalario.setText("");
-				 
-			}	   
-				 
-			}
-		
-			
+				}
+			}	   	 
+			}	
 	});
 	desktopI.add(continuar);
-	
 	volver.setBounds(333, 277, 80, 23);
 	volver.setVisible(true);
 	volver.addActionListener(new ActionListener() {
@@ -483,49 +505,34 @@ public void ingresar() throws PropertyVetoException {
 		}
 	});
 	desktopI.add(volver);
-	
-	
 boxC.addItemListener(new ItemListener() {
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
-		
 		if(e.getStateChange() == ItemEvent.SELECTED);
-		
-			boxS.setModel(new DefaultComboBoxModel(accionComboBoxClientes(boxC.getSelectedItem().toString())));
-			
+			boxS.setModel(new DefaultComboBoxModel(accionComboBoxClientes(boxC.getSelectedItem().toString())));	
 		}
 }
-);
-	
-	
+);	
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 public void dinamicDesk (String boxC, String boxS, String n, String d, String s) {
-	
-	if (boxC.equalsIgnoreCase("Administrativo")&&boxS.equalsIgnoreCase("Credito Corriente")) {		 //ADMINISTRATIVO- CORRIENTE
+	  if (boxC.equalsIgnoreCase("Administrativo")&&boxS.equalsIgnoreCase("Credito Corriente")) {		 //ADMINISTRATIVO- CORRIENTE
 		c = new Corriente();
-			// TODO Auto-generated catch block
-			
+			// TODO Auto-generated catch bloc
 			escritorioP.add(c.dskCorrienteAdministrativo());
 			escritorioP.setVisible(true);		
 			try {
 				c.getiFrame().setMaximum(true);
 			} catch (PropertyVetoException e) {
 			}
-			
 			c.getiFrame().toFront();
-			
 			c.clienteAd.setNombre(n);
 			c.clienteAd.setDni(d);
 			c.clienteAd.setSalario(Double.parseDouble(s));
 			lista.insertarFinal(c);
 			getiFrame().dispose();
-			
 	}else if (boxC.equalsIgnoreCase("Docente")&&boxS.equalsIgnoreCase("Credito Corriente")) {		//DOCENTE-CORRIENTE
-		
-		
 		c = new Corriente();
 		frameBase(c.dskCorrienteDocente(),"Ingresa datos Docente en credito corriente");
 		c.clienteDo.setNombre(n);
@@ -596,9 +603,7 @@ public void dinamicDesk (String boxC, String boxS, String n, String d, String s)
 	}
 	
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 public void frameBase(JDesktopPane d, String t) {
 	
 	JInternalFrame iFrame = new JInternalFrame("Ingresar");
@@ -622,30 +627,24 @@ public void frameBase(JDesktopPane d, String t) {
 			iFrame.dispose();
 		}
 	});
-	
 	iFrame.add(d);
 	try {
 		iFrame.setMaximum(true);
 	} catch (PropertyVetoException e) {
 	}
 	iFrame.toFront();
-	
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 public String[] accionComboBoxClientes(String cliente) { 
 	
 	//COMBO BOX DEPENDIENTES ;)
 	
-	String [] servicios= new String[0];;
-
+	String [] servicios= new String[1];
+	servicios[0]= "Selecciona tipo de cliente primero";
 	if(cliente.equalsIgnoreCase("Selecciona")) {
 		servicios = new String[1];
 		servicios[0]= "Selecciona tipo de cliente primero";
-	}else if(!cliente.equalsIgnoreCase("Selecciona")) {
-		
+	}else if(!cliente.equalsIgnoreCase("Selecciona")) {	
 	if(cliente.equalsIgnoreCase("Administrativo")) {
 		servicios = new String[7];
 		servicios[0]= "Selecciona producto financiero";
@@ -673,7 +672,6 @@ public String[] accionComboBoxClientes(String cliente) {
 		servicios[4] = "Plan ahorro anual";
 	}
 	}
-
 	return servicios;
 }	
 }
