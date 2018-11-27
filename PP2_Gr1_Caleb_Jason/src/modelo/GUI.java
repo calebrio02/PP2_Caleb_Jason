@@ -382,16 +382,96 @@ public void ingresar() throws PropertyVetoException {
 	continuar.setBounds(227, 277, 90, 23);
 	continuar.setVisible(true);
 	continuar.addActionListener(new ActionListener() {
-		
-
 		public void actionPerformed(ActionEvent arg0) {
-			dinamicDesk(boxC.getSelectedItem().toString(), boxS.getSelectedItem().toString(),
-					aNombre.getText(),aDni.getText(),aSalario.getText());
-					aNombre.setText("");
+			if(aNombre.getText().isEmpty()) {
+				  JOptionPane opt = new JOptionPane("Ingresa un nombre", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+				  final JDialog dlg = opt.createDialog("Aviso");
+				  new Thread(new Runnable()
+				        {
+				          public void run()
+				          {
+				            try
+				            {
+				              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+				              dlg.dispose();
+
+				            }
+				            catch ( Throwable th )
+				            {
+				          
+				            }
+				          }
+				        }).start();
+				  dlg.setVisible(true);
+				
+				
+			}else if(aDni.getText().isEmpty()||aDni.getText().length()<7){
+				
+				if(aDni.getText().length()<7) {
+					JOptionPane.showMessageDialog(null,"El DNI debe contener 7 digitos");
 					aDni.setText("");
-					aSalario.setText("");
-			 
-		}
+				}else {
+				  JOptionPane opt = new JOptionPane("Ingresa una identificacion", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+				  final JDialog dlg = opt.createDialog("Aviso");
+				  new Thread(new Runnable()
+				        {
+				          public void run()
+				          {
+				            try
+				            {
+				              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+				              dlg.dispose();
+
+				            }
+				            catch ( Throwable th )
+				            {
+				          
+				            }
+				          }
+				        }).start();
+				  dlg.setVisible(true);
+				}
+			
+			}else if(aSalario.getText().isEmpty()) {
+				  JOptionPane opt = new JOptionPane("Vacio", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+				  final JDialog dlg = opt.createDialog("Aviso");
+				  new Thread(new Runnable()
+				        {
+				          public void run()
+				          {
+				            try
+				            {
+				              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+				              dlg.dispose();
+
+				            }
+				            catch ( Throwable th )
+				            {
+				          
+				            }
+				          }
+				        }).start();
+				  dlg.setVisible(true);
+				
+			
+			
+			}else {
+			
+			
+			
+							
+ 
+				dinamicDesk(boxC.getSelectedItem().toString(), boxS.getSelectedItem().toString(),
+						aNombre.getText(),aDni.getText(),aSalario.getText());
+						aNombre.setText("");
+						aDni.setText("");
+						aSalario.setText("");
+				 
+			}	   
+				 
+			}
+		
+			
 	});
 	desktopI.add(continuar);
 	
