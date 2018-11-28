@@ -85,6 +85,21 @@ public class GUI<E> {
 	
 public void inicio() {
 	
+escritorioP = new JDesktopPane() {
+		
+		ImageIcon img = new ImageIcon("/Users/jasonlara/eclipse-workspace/PP2_Gr1_Caleb_Jason-master/src/modelo/pial.png");
+		Image image = img.getImage();
+		Image img1 = image.getScaledInstance(630, 600, Image.SCALE_SMOOTH);
+		 
+		
+		
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			g.drawImage(img1, 0, 0, this);
+			
+		}
+	};
+	
 	//BOTONES
 	JButton ingresar = new JButton("Ingresar");
 	//PanelCont.setLayout(cl);
