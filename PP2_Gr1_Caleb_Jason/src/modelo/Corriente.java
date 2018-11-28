@@ -1,7 +1,11 @@
 package modelo;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyVetoException;
 import java.io.Serializable;
 
@@ -171,14 +175,9 @@ public String muestraDatosAdministrativosCorriente() {
 	return mensaje;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //PLANTILLA GRAFICA DEL CLIENTE ADMINISTRATICO *CORRIENTE*
 public JInternalFrame dskCorrienteAdministrativo() {
-	
-	
-	
 		//escritorio
 	JDesktopPane desktopI = new JDesktopPane();
 	
@@ -198,15 +197,100 @@ public JInternalFrame dskCorrienteAdministrativo() {
 	plazo.setColumns(10);
 	plazo.setBounds(150, 98, 130, 26);
 	desktopI.add(plazo);
-	
+	plazo.addKeyListener(new KeyListener(){
+   	 
+    	public void keyTyped(KeyEvent e)
+    	 
+    	{if (plazo.getText().length()== 2)
+    	 
+    	     e.consume();
+    	}
+    	 
+    	public void keyPressed(KeyEvent arg0) {
+    	}
+    	 
+    	public void keyReleased(KeyEvent arg0) {
+    	}
+    	});
+	plazo.addKeyListener(new KeyAdapter()
+    {
+       public void keyTyped(KeyEvent e)
+       {
+          char caracter = e.getKeyChar();
+
+          // Verificar si la tecla pulsada no es un digito
+          if(((caracter < '0') ||
+             (caracter > '9')) &&
+             (caracter != '\b' /*corresponde a BACK_SPACE*/))
+          {
+             e.consume();  // ignorar el evento de teclado
+             JOptionPane opt = new JOptionPane("Ingrese solo numeros", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+			  final JDialog dlg = opt.createDialog("Aviso");
+			  new Thread(new Runnable()
+			        {
+			          public void run()
+			          {
+			            try
+			            {
+			              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+			              dlg.dispose();
+
+			            }
+			            catch ( Throwable th )
+			            {
+			          
+			            }
+			          }
+			        }).start();
+			  dlg.setVisible(true);
+          }
+       }
+    });
 	JTextField montoHipoteca = new JTextField();
 	montoHipoteca.setColumns(10);
 	montoHipoteca.setBounds(150, 126, 130, 26);
+	montoHipoteca.addKeyListener(new KeyAdapter()
+    {
+       public void keyTyped(KeyEvent e)
+       {
+          char caracter = e.getKeyChar();
+
+          // Verificar si la tecla pulsada no es un digito
+          if(((caracter < '0') ||
+             (caracter > '9')) &&
+             (caracter != '\b' /*corresponde a BACK_SPACE*/))
+          {
+             e.consume();  // ignorar el evento de teclado
+             JOptionPane opt = new JOptionPane("Ingrese solo numeros", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+			  final JDialog dlg = opt.createDialog("Aviso");
+			  new Thread(new Runnable()
+			        {
+			          public void run()
+			          {
+			            try
+			            {
+			              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+			              dlg.dispose();
+
+			            }
+			            catch ( Throwable th )
+			            {
+			          
+			            }
+			          }
+			        }).start();
+			  dlg.setVisible(true);
+          }
+       }
+    });
 	desktopI.add(montoHipoteca);
 	
 	//Labels
-	
-	JLabel lPuesto = new JLabel("Puesto");
+	JLabel lMHipoteca = new JLabel("Minimo de hipoteca ¢: "+getHipoteca());
+	lMHipoteca.setBounds(333, 136, 200, 16);
+	lMHipoteca.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+	desktopI.add(lMHipoteca);
+	JLabel lPuesto = new JLabel("Puesto ");
 	lPuesto.setBounds(26, 42, 200, 16);
 	desktopI.add(lPuesto);
 	
@@ -223,7 +307,7 @@ public JInternalFrame dskCorrienteAdministrativo() {
 	desktopI.add(lHipoteca);
 	
 	//Buttons
-	JButton ingresar = new JButton("ingresar");
+	JButton ingresar = new JButton("Ingresar");
 
 	ingresar.setBounds(227, 277, 90, 23);
 	ingresar.setVisible(true);
@@ -235,7 +319,7 @@ public JInternalFrame dskCorrienteAdministrativo() {
 			setPlazo(Integer.parseInt(plazo.getText()));		
 			setHipoteca(Double.parseDouble(montoHipoteca.getText()));
 			setTipoCliente("Administrativo");
-			ingresaAdministrativoCreditoCorriente();
+			//ingresaAdministrativoCreditoCorriente();
 			clienteAd.setLugarTrabajo(lTrabajo.getText());
 			clienteAd.setPuesto(puesto.getText());					
 			 
@@ -286,16 +370,7 @@ public JInternalFrame dskCorrienteAdministrativo() {
 	desktopI.add(ingresar);
 	desktopI.add(volver);
 	desktopI.setSize(600,400);
-		
-		
-		
-		
-	 return iFrame;
-		 
-	
-		
-
-	
+	 return iFrame;	
 }
 
 public void ingresaDocenteCreditoCorriente() {

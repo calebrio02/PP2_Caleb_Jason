@@ -3,6 +3,9 @@ package modelo;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -12,8 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
-
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
@@ -64,29 +67,25 @@ public class GUI<E> {
 		this.salario = salario;
 	}
 	Lista lista = new Lista();
-	JFrame frame = new JFrame("Menu principal Sistema PIAL");
-	JDesktopPane escritorioP = new JDesktopPane();
-	JPanel PanelCont = new JPanel();
 	Corriente c = new Corriente();
 	Vivienda v = new Vivienda();
 	EspecialOrdinario eo = new EspecialOrdinario();
 	EquipoComputo ec = new EquipoComputo();
 	Anual a = new Anual();
 	ALaVista av = new ALaVista();
-	CardLayout cl = new CardLayout();
-	
-JInternalFrame iFrame = new JInternalFrame("Ingresar");
-	
+	JFrame frame = new JFrame("Menu principal Sistema PIAL");	
+	JDesktopPane escritorioP = new JDesktopPane();
+	JInternalFrame iFrame = new JInternalFrame("Ingresar");
 	JDesktopPane desktopI = new JDesktopPane();
+	ImageIcon ico = new ImageIcon(getClass().getResource("/modelo/PIngresarjpg.jpg"));
+	Image image = ico.getImage();
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 public void inicio() {
-
 	
 	//BOTONES
-	
 	JButton ingresar = new JButton("Ingresar");
 	//PanelCont.setLayout(cl);
 	ingresar.setSize(10, 30);
@@ -205,7 +204,10 @@ public void inicio() {
 	escritorioP.add(recuperar);
 	escritorioP.add(salir);
 	escritorioP.setVisible(true);
-
+		/*public void paint(Graphics g) {
+			g.drawImage(image, 0, 0, getWidth(),getHeight(),this);
+		}
+	};*/
 frame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 frame.setSize(600,400);
 frame.setBounds(200, 200, 640, 640);
@@ -213,12 +215,9 @@ frame.setLocationRelativeTo(null);
 frame.getContentPane().setLayout(null);
 frame.add(escritorioP);
 frame.setVisible(true);
+
 }
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 public void ingresarDatosGenerales(){
 		JInternalFrame iFrame = new JInternalFrame("Ingresa datos del paquete");
 		JDesktopPane desktopI = new JDesktopPane();
@@ -249,9 +248,7 @@ public void ingresarDatosGenerales(){
 		
 	}
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 public void ingresar() throws PropertyVetoException {
 	
 
@@ -260,7 +257,7 @@ public void ingresar() throws PropertyVetoException {
 	JInternalFrame iFrame = new JInternalFrame("Ingresar");
 	JDesktopPane desktopI = new JDesktopPane();
 	JLabel nombre = new JLabel("Nombre");
-	JLabel dni = new JLabel("Dni");
+	JLabel dni = new JLabel("DNI");
 	JLabel salario = new JLabel("Salario");
 	JLabel tipoCliente = new JLabel("Tipo de Cliente");
 	JLabel productoFinanciero = new JLabel("Producto Financiero");
@@ -270,19 +267,17 @@ public void ingresar() throws PropertyVetoException {
 	JButton continuar = new JButton("Continuar");
 	JButton volver = new JButton("Volver");
 	
-
-	
 	//CREANDO LOS COMBO-BOX
 	JComboBox boxS;
 	JComboBox boxC;
 	
 	String[] clientes = {"Selecciona","Administrativo", "Docente","Pensionado"};
 	String[] servicioA = {"Selecciona tipo de cliente primero"};
-	String[] servicioB = {"Selecciona","Credito Corriente","Prestamo Vivienda","Equipo Computo","Plan ahorro anual"};
 	
-	nombre.setBounds(47, 44,50, 14);
+	nombre.setBounds(47, 44,60, 16);
     nombre.setVisible(true);
-    aNombre.setBounds(103, 41, 86, 20);
+    nombre.setFont(new Font("Courier", Font.BOLD, 16)); 
+    aNombre.setBounds(120, 41, 86, 20);
     aNombre.setVisible(true);
     
     
@@ -290,9 +285,10 @@ public void ingresar() throws PropertyVetoException {
     desktopI.add(aNombre);
     
     
-    dni.setBounds(47, 74,50, 14);
+    dni.setBounds(47, 74,60, 16);
     dni.setVisible(true);
-    aDni.setBounds(103, 71, 86, 20);
+    dni.setFont(new Font("Courier", Font.BOLD, 16));
+    aDni.setBounds(120, 71, 86, 20);
     aDni.setVisible(true);
     desktopI.add(dni);
     desktopI.add(aDni);
@@ -312,9 +308,10 @@ public void ingresar() throws PropertyVetoException {
     	}
     	});
     
-    salario.setBounds(47, 104,50, 14);
+    salario.setBounds(47, 104,70, 16);
     salario.setVisible(true);
-    aSalario.setBounds(103, 101, 86, 20);
+    salario.setFont(new Font("Courier", Font.BOLD, 16));
+    aSalario.setBounds(120, 101, 86, 20);
     aSalario.setVisible(true);
     desktopI.add(salario);
     desktopI.add(aSalario);
@@ -373,9 +370,11 @@ public void ingresar() throws PropertyVetoException {
 
 	
 	tipoCliente.setBounds(26, 150, 200, 20);
+	tipoCliente.setFont(new Font("Courier", Font.BOLD, 12));
 	desktopI.add(tipoCliente);
 	
 	productoFinanciero.setBounds(26, 200, 200, 20);
+	productoFinanciero.setFont(new Font("Courier", Font.BOLD, 12));
 	desktopI.add(productoFinanciero);
 	
 	boxC = new JComboBox(clientes);
@@ -388,8 +387,9 @@ public void ingresar() throws PropertyVetoException {
 	boxS.setModel(new DefaultComboBoxModel(servicioA));
 	desktopI.add(boxS);
 
-	continuar.setBounds(227, 277, 90, 23);
+	continuar.setBounds(200, 277, 100, 23);
 	continuar.setVisible(true);
+	continuar.setFont(new Font("Courier", Font.BOLD, 11));
 	continuar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			if(aNombre.getText().isEmpty()) {
@@ -499,6 +499,7 @@ public void ingresar() throws PropertyVetoException {
 	desktopI.add(continuar);
 	volver.setBounds(333, 277, 80, 23);
 	volver.setVisible(true);
+	volver.setFont(new Font("Courier", Font.BOLD, 11));
 	volver.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			iFrame.dispose();
@@ -520,6 +521,10 @@ public void dinamicDesk (String boxC, String boxS, String n, String d, String s)
 	  if (boxC.equalsIgnoreCase("Administrativo")&&boxS.equalsIgnoreCase("Credito Corriente")) {		 //ADMINISTRATIVO- CORRIENTE
 		c = new Corriente();
 			// TODO Auto-generated catch bloc
+		c.clienteAd.setNombre(n);
+		c.clienteAd.setDni(d);
+		c.clienteAd.setSalario(Double.parseDouble(s));
+		c.ingresaAdministrativoCreditoCorriente();
 			escritorioP.add(c.dskCorrienteAdministrativo());
 			escritorioP.setVisible(true);		
 			try {
@@ -527,9 +532,6 @@ public void dinamicDesk (String boxC, String boxS, String n, String d, String s)
 			} catch (PropertyVetoException e) {
 			}
 			c.getiFrame().toFront();
-			c.clienteAd.setNombre(n);
-			c.clienteAd.setDni(d);
-			c.clienteAd.setSalario(Double.parseDouble(s));
 			lista.insertarFinal(c);
 			getiFrame().dispose();
 	}else if (boxC.equalsIgnoreCase("Docente")&&boxS.equalsIgnoreCase("Credito Corriente")) {		//DOCENTE-CORRIENTE
