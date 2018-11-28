@@ -85,11 +85,9 @@ public void inicio() {
 	
 escritorioP = new JDesktopPane() {
 		
-		ImageIcon img = new ImageIcon("/Users/jasonlara/git/PP2_Caleb_Jason/PP2_Gr1_Caleb_Jason/src/modelo/pial.png");
+		ImageIcon img = new ImageIcon("pial.png");
 		Image image = img.getImage();
 		Image img1 = image.getScaledInstance(630, 600, Image.SCALE_SMOOTH);
-		 
-		
 		
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
