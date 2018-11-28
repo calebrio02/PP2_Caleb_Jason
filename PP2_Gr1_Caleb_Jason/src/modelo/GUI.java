@@ -25,10 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.CaretEvent;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import controlador.Lista;
 
@@ -68,6 +65,7 @@ public class GUI<E> {
 	}
 	Lista lista = new Lista();
 	Corriente c = new Corriente();
+	Corriente temp = new  Corriente();
 	Vivienda v = new Vivienda();
 	EspecialOrdinario eo = new EspecialOrdinario();
 	EquipoComputo ec = new EquipoComputo();
@@ -147,13 +145,19 @@ escritorioP = new JDesktopPane() {
 	guardar.setBounds(275,250, 100, 30);
 	guardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	guardar.setVisible(true);
-	guardar.addActionListener(e-> {
-		try {
-			lista.guardarInfo();
-		} catch (IOException e1) {
-			
+	guardar.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				lista.guardarInfo();
+			} catch (IOException e1) {
+				
+			}
 		}
 	});
+	
 	
 	
 	JButton recuperar = new JButton("Recuperar");
@@ -475,28 +479,9 @@ public void ingresar() throws PropertyVetoException {
 				
 			
 			
-			}else {
-				
-				
-				if(boxS.getSelectedItem().toString().equalsIgnoreCase("Selecciona tipo de cliente primero")) {
-					JOptionPane opt = new JOptionPane("Debes escoger un cliente y un producto financiero!", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
-					  final JDialog dlg = opt.createDialog("Aviso");
-					  new Thread(new Runnable()
-					        {
-					          public void run()
-					          {
-					            try
-					            {
-					              Thread.sleep(1500);//Duracion de un segundo para que el mensaje desaparezca
-					              dlg.dispose();
-
-					            }
-					            catch ( Throwable th )
-					            {
-					            }
-					          }
-					        }).start();
-					  dlg.setVisible(true);
+			}else if(boxS.getSelectedItem().toString().equalsIgnoreCase("Selecciona tipo de cliente primero")
+					||boxS.getSelectedItem().toString().equalsIgnoreCase("Selecciona producto financiero")) {
+				c.mensajeTemporizado("Debes escoger un cliente y un producto financiero!", 1500);
 				}else {
 				dinamicDesk(boxC.getSelectedItem().toString(), boxS.getSelectedItem().toString(),
 						aNombre.getText(),aDni.getText(),aSalario.getText());
@@ -505,7 +490,7 @@ public void ingresar() throws PropertyVetoException {
 						aSalario.setText("");
 				}
 			}	   	 
-			}	
+				
 	});
 	desktopI.add(continuar);
 	volver.setBounds(333, 277, 80, 23);
@@ -530,21 +515,9 @@ boxC.addItemListener(new ItemListener() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 public void dinamicDesk (String boxC, String boxS, String n, String d, String s) {
 	  if (boxC.equalsIgnoreCase("Administrativo")&&boxS.equalsIgnoreCase("Credito Corriente")) {		 //ADMINISTRATIVO- CORRIENTE
-		c = new Corriente();
 			// TODO Auto-generated catch bloc
-		c.clienteAd.setNombre(n);
-		c.clienteAd.setDni(d);
-		c.clienteAd.setSalario(Double.parseDouble(s));
-		c.ingresaAdministrativoCreditoCorriente();
-			escritorioP.add(c.dskCorrienteAdministrativo());
-			escritorioP.setVisible(true);		
-			try {
-				c.getiFrame().setMaximum(true);
-			} catch (PropertyVetoException e) {
-			}
-			c.getiFrame().toFront();
-			lista.insertarFinal(c);
-			getiFrame().dispose();
+		dskCorrienteAdministrativo(n,d,s);
+			
 	}else if (boxC.equalsIgnoreCase("Docente")&&boxS.equalsIgnoreCase("Credito Corriente")) {		//DOCENTE-CORRIENTE
 		c = new Corriente();
 		frameBase(c.dskCorrienteDocente(),"Ingresa datos Docente en credito corriente");
@@ -646,8 +619,228 @@ public void frameBase(JDesktopPane d, String t) {
 	} catch (PropertyVetoException e) {
 	}
 	iFrame.toFront();
+	
+	
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+public void dskCorrienteAdministrativo(String n,String d, String s) {
+	iFrame = new JInternalFrame("Ingresar datos credito corriente ");
+c = new Corriente();
+c.clienteAd.setNombre(n);
+c.clienteAd.setDni(d);
+c.clienteAd.setSalario(Double.parseDouble(s));
+c.ingresaAdministrativoCreditoCorriente();
+	JDesktopPane desktopI = new JDesktopPane();
+	desktopI = new JDesktopPane() {
+		
+		ImageIcon img = new ImageIcon("dollar.jpg");
+		Image image = img.getImage();
+		Image img1 = image.getScaledInstance(630, 600, Image.SCALE_SMOOTH);
+		
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			g.drawImage(img1, 0, 0, this);
+			
+		}
+	};
+	
+		//textfields
+	JTextField puesto = new JTextField();
+	puesto.setColumns(10);
+	puesto.setBounds(150, 42, 130, 26);
+	desktopI.add(puesto);
+	
+	JTextField lTrabajo = new JTextField();
+	lTrabajo.setColumns(10);
+	lTrabajo.setBounds(150, 70, 130, 26);
+	desktopI.add(lTrabajo);
+	
+	JTextField plazo = new JTextField();
+	plazo.setColumns(10);
+	plazo.setBounds(150, 98, 130, 26);
+	desktopI.add(plazo);
+	plazo.addKeyListener(new KeyListener(){
+   	 
+    	public void keyTyped(KeyEvent e)
+    	 
+    	{if (plazo.getText().length()== 2)
+    	 
+    	     e.consume();
+    	}
+    	 
+    	public void keyPressed(KeyEvent arg0) {
+    	}
+    	 
+    	public void keyReleased(KeyEvent arg0) {
+    	}
+    	});
+	plazo.addKeyListener(new KeyAdapter()
+    {
+       public void keyTyped(KeyEvent e)
+       {
+          char caracter = e.getKeyChar();
+
+          // Verificar si la tecla pulsada no es un digito
+          if(((caracter < '0') ||
+             (caracter > '9')) &&
+             (caracter != '\b' /*corresponde a BACK_SPACE*/))
+          {
+             e.consume();  // ignorar el evento de teclado
+             JOptionPane opt = new JOptionPane("Ingrese solo numeros", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+			  final JDialog dlg = opt.createDialog("Aviso");
+			  new Thread(new Runnable()
+			        {
+			          public void run()
+			          {
+			            try
+			            {
+			              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+			              dlg.dispose();
+
+			            }
+			            catch ( Throwable th )
+			            {
+			          
+			            }
+			          }
+			        }).start();
+			  dlg.setVisible(true);
+          }
+       }
+    });
+	JTextField montoHipoteca = new JTextField();
+	montoHipoteca.setColumns(10);
+	montoHipoteca.setBounds(150, 126, 130, 26);
+	montoHipoteca.addKeyListener(new KeyAdapter()
+    {
+       public void keyTyped(KeyEvent e)
+       {
+          char caracter = e.getKeyChar();
+
+          // Verificar si la tecla pulsada no es un digito
+          if(((caracter < '0') ||
+             (caracter > '9')) &&
+             (caracter != '\b' /*corresponde a BACK_SPACE*/))
+          {
+             e.consume();  // ignorar el evento de teclado
+             JOptionPane opt = new JOptionPane("Ingrese solo numeros", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+			  final JDialog dlg = opt.createDialog("Aviso");
+			  new Thread(new Runnable()
+			        {
+			          public void run()
+			          {
+			            try
+			            {
+			              Thread.sleep(1000);//Duracion de un segundo para que el mensaje desaparezca
+			              dlg.dispose();
+
+			            }
+			            catch ( Throwable th )
+			            {
+			          
+			            }
+			          }
+			        }).start();
+			  dlg.setVisible(true);
+          }
+       }
+    });
+	desktopI.add(montoHipoteca);
+	
+	//Labels
+	JLabel lMHipoteca = new JLabel("Minimo de hipoteca ¢: "+c.getHipoteca());
+	lMHipoteca.setBounds(333, 136, 300, 16);
+	lMHipoteca.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+	lMHipoteca.setForeground(Color.WHITE);
+	desktopI.add(lMHipoteca);
+	JLabel lPuesto = new JLabel("Puesto ");
+	lPuesto.setBounds(26, 42, 200, 16);
+	desktopI.add(lPuesto);
+	
+	JLabel lLTrabajo = new JLabel("Lugar de trabajo");
+	lLTrabajo.setBounds(26, 70, 200, 16);
+	desktopI.add(lLTrabajo);
+	
+	JLabel lPlazo = new JLabel("Plazo");
+	lPlazo.setBounds(26, 98, 200, 16);
+	desktopI.add(lPlazo);
+	
+	JLabel lHipoteca = new JLabel("Monto de Hipoteca");
+	lHipoteca.setBounds(26, 136, 200, 16);
+	desktopI.add(lHipoteca);
+	
+	//Buttons
+	JButton ingresar = new JButton("Ingresar");
+
+	ingresar.setBounds(227, 277, 90, 23);
+	ingresar.setVisible(true);
+	ingresar.addActionListener(new ActionListener() {
+		
+
+		public void actionPerformed(ActionEvent arg0) {
+			if(puesto.getText().isEmpty()) {
+				c.mensajeTemporizado("Debes indicar un puesto", 1500);
+			}else if(lTrabajo.getText().isEmpty()) {
+				c.mensajeTemporizado("Debes indicar un lugar de trabajo", 1500);
+			}else if(plazo.getText().isEmpty()) {
+				
+				c.mensajeTemporizado("Debes ingresar un plazo", 1500);
+				
+			}else if (Integer.parseInt(plazo.getText())<24||Integer.parseInt(plazo.getText())>72) {
+				
+				c.mensajeTemporizado("El plazo debe estar entre 24 y 72 meses", 1500);
+				
+			}else if (montoHipoteca.getText().isEmpty()) {
+				c.mensajeTemporizado("Debes ingresar un monto para la hipoteca \n El minimo es -> ¢ "+c.getHipoteca(), 1500);
+			}else if(Double.parseDouble(montoHipoteca.getText())<c.getHipoteca()) {
+				JOptionPane.showMessageDialog(null, "Debes ingresar un monto minimo de »» ¢ "+c.getHipoteca());
+				
+			}else {
+			c.setPlazo(Integer.parseInt(plazo.getText()));		
+			c.setHipoteca(Double.parseDouble(montoHipoteca.getText()));
+			c.setTipoCliente("Administrativo");
+			c.clienteAd.setLugarTrabajo(lTrabajo.getText());
+			c.clienteAd.setPuesto(puesto.getText());					 
+			//MENSAJE INFORMATIVO TEMPORIZADO
+			c.mensajeTemporizado("Datos agregados!",800 );
+			  iFrame.dispose();
+			  
+		}
+		}
+	});
+	
+	
+	JButton volver = new JButton("Volver");
+	volver.setBounds(333, 277, 80, 23);
+	volver.setVisible(true);
+	volver.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			iFrame.dispose();
+		}
+	});
+	iFrame.setTitle("hola");
+	iFrame.setMaximizable(false);
+	iFrame.setIconifiable(true);
+	iFrame.setResizable(false);
+	iFrame.setClosable(true);
+	iFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+	iFrame.setSize(500,400);
+	iFrame.setVisible(true);
+	iFrame.setLocation(60, 100);
+	iFrame.add(desktopI);
+	desktopI.add(ingresar);
+	desktopI.add(volver);
+	desktopI.setSize(600,400);
+	escritorioP.add(iFrame);
+	try {
+		iFrame.setMaximum(true);
+	} catch (PropertyVetoException e) {
+	}
+	iFrame.toFront();
+	lista.insertarFinal(c);
+	 
+}
+
 public String[] accionComboBoxClientes(String cliente) { 
 	
 	//COMBO BOX DEPENDIENTES ;)

@@ -2,6 +2,9 @@ package modelo;
 
 import java.io.Serializable;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 public abstract class Servicios implements Serializable  {//CALSE ABSTRACTA 
 	///////////////////////////////////////////////////
 	Administrativos clienteAd = new Administrativos();//
@@ -66,7 +69,27 @@ public String MuestraDatosDocentes() {
 public String MuestraDatosPensionados() {
 	return clientePe.RespuestaPensionado();
 }
+public void mensajeTemporizado(String s, int t) {
+	JOptionPane opt = new JOptionPane(s, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{});
+	  final JDialog dlg = opt.createDialog("Aviso");
+	  new Thread(new Runnable()
+	        {
+	          public void run()
+	          {
+	            try
+	            {
+	              Thread.sleep(t);//Duracion de un segundo para que el mensaje desaparezca
+	              dlg.dispose();
 
+	            }
+	            catch ( Throwable th )
+	            {
+	          
+	            }
+	          }
+	        }).start();
+	  dlg.setVisible(true);
+}
 public abstract String SoloDNI();//metodo abstracto para mostrar SOLO EL DNI
 
 public abstract void Ingresar();//metodo abstracto para ingresar datos
