@@ -77,8 +77,6 @@ public class GUI<E> {
 	JDesktopPane escritorioP = new JDesktopPane();
 	JInternalFrame iFrame = new JInternalFrame("Ingresar");
 	JDesktopPane desktopI = new JDesktopPane();
-	ImageIcon ico = new ImageIcon(getClass().getResource("/modelo/PIngresarjpg.jpg"));
-	Image image = ico.getImage();
 	
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -87,7 +85,7 @@ public void inicio() {
 	
 escritorioP = new JDesktopPane() {
 		
-		ImageIcon img = new ImageIcon("/Users/jasonlara/eclipse-workspace/PP2_Gr1_Caleb_Jason-master/src/modelo/pial.png");
+		ImageIcon img = new ImageIcon("/Users/jasonlara/git/PP2_Caleb_Jason/PP2_Gr1_Caleb_Jason/src/modelo/pial.png");
 		Image image = img.getImage();
 		Image img1 = image.getScaledInstance(630, 600, Image.SCALE_SMOOTH);
 		 
